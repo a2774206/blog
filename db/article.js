@@ -9,6 +9,10 @@ let articleSchema =  new mongoose.Schema({
 	  unique: true,
 	  required: true
   },
+  author:{
+	  type:String,
+	  required:true
+  },
   title:{
   	  type:String,
   	  required: true
@@ -17,6 +21,13 @@ let articleSchema =  new mongoose.Schema({
 	  type:String,
 	  required: true
   },
+  created_time:{
+	  type:String,
+	  default:() => +new Date()
+  },
+  updated_time:{
+	  type:String
+  }
 });
 
  module.exports = mongoose.model('articleSchema', articleSchema);

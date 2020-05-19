@@ -11,44 +11,26 @@ router.all('/select', function(req, res, next) {
 	//  解决跨域
 	util.CrossDomain(req, res, next);
 	let token = req.body.token || req.query.token || req.headers['token'];
-	//  校验 token,登录状态
-	util.checkToken(token, res).then((r) => {
-		if (!r) {
-			classSchema.find({}, function(err, ification) {
-				if (err) {
-					return res.json({
-						status: 400,
-						message: '发生错误!'
-					});
-				} else {
-					let name = !!req.query.name ? {
-						name: req.query.name
-					} : {};
-					classSchema.find({
-						name
-					}, function(err, docs) {
-						if (err) {
-							res.json({
-								status: 400,
-								message: '标签不存在!'
-							})
-						} else {
-							res.json({
-								status: 0,
-								message: 'success',
-								data: {
-									docs
-								}
-							})
-						}
-
-					});
-				}
+	//  查询,暂不校验token
+	let name = !!req.query.name ? {
+		name: req.query.name
+	} : {};
+	classSchema.find(name, function(err, docs) {
+		if (err) {
+			res.json({
+				status: 400,
+				message: '标签不存在!'
 			})
 		} else {
-			res.json(r);
+			res.json({
+				status: 0,
+				message: 'success',
+				data: {
+					docs
+				}
+			})
 		}
-
+	
 	});
 
 });
@@ -119,7 +101,7 @@ router.all('/update', function(req, res, next) {
 				})
 				
 			}
-			if (!req.query.tabname && !req.query.remarks) {
+			if (!req.query.name && !req.query.remarks) {
 				res.json({
 					status: 400,
 					message: '标签名或备注不能为空'
@@ -127,7 +109,7 @@ router.all('/update', function(req, res, next) {
 			} else {
 				let updataData = {};
 				
-				 req.query.tabname? updataData['tabname'] = req.query.tabname : '';
+				 req.query.name? updataData['tabname'] = req.query.name : '';
 				 req.query.remarks? updataData['remarks'] = req.query.remarks : '';
 				 
 				classSchema.update({uuid:req.query.uuid}, {$set: updataData},function(err,raw){

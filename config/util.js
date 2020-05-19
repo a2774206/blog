@@ -21,7 +21,7 @@ module.exports = {
 			       // 解码 token (验证 secret 和检查有效期（exp）)
 				   let json = await jwt.verify(token, config.secret, function(err, decoded) {      
 			             if (err) {
-			   				return { success: false, message: 'token 已经无效.' };
+			   				return { status:401,success: false, message: 'token已经失效' };
 			             }
 			       });
 				  return json;
