@@ -5,12 +5,12 @@ module.exports = {
 	CrossDomain : (req, res, next) => {
 		res.header("Access-Control-Allow-Origin", "*");
 		// 允许的header类型
-		res.header("Access-Control-Allow-Headers", "token");
+		res.header("Access-Control-Allow-Headers", "token,Origin, X-Requested-With, Content-Type, Accept");
 		//跨域允许的请求方式 
 		res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
 		// res.header('Access-Control-Allow-Credentials', true);
 		if (req.method.toLowerCase() == 'options') {
-			return res.send(200); // 让options尝试请求快速结束
+			return 200; // 让options尝试请求快速结束
 		} else {
 			next();
 		}
@@ -21,7 +21,7 @@ module.exports = {
 			       // 解码 token (验证 secret 和检查有效期（exp）)
 				   let json = await jwt.verify(token, config.secret, function(err, decoded) {      
 			             if (err) {
-			   				return { status:401,success: false, message: 'token已经失效' };
+			   				return { status:401, message: 'token已经失效' };
 			             }
 			       });
 				  return json;

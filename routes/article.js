@@ -2,13 +2,22 @@ var express = require('express');
 var router = express.Router();
 const util = require('./../config/util');
 var article = require('../db/article.js');
-var classification = require('../db/classification.js')
+var classification = require('../db/classification.js');
+
+// post 获取参数body-parser
+var bodyParser = require('body-parser');
+// 创建 application/x-www-form-urlencoded 编码解析
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+
 const uuid = require('node-uuid');
 
 
-router.all('/find', function(req, res, next) {
+router.all('/find',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	util.CrossDomain(req, res, next);
+	var { pageSize = 10,pageNum = 1,keywords,classUuid } = Object.assign(req.query,req.body);
+	
+	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
+	
 	article.find({}, function(err, ification) {
 		if (err) {
 			return res.json({
@@ -16,27 +25,46 @@ router.all('/find', function(req, res, next) {
 				message: '发生错误!'
 			});
 		} else {
-
-			const reg = new RegExp(req.query.title, 'i')
-			article.find({
+			var total = 0;
+			const reg = new RegExp(keywords, 'i');
+			//  暂时只提供标题模糊搜索
+			//  分类 -> 模糊搜索 ->翻页
+			article.count({
 				$or: [{
+					classUuid:{
+						$regex: new RegExp(classUuid)
+					},
 					title: {
 						$regex: reg
 					}
 				}]
-			}, function(err, data) {
+			},(err,count) => {
+				if(!err){
+					total = count;
+				}
+			})
+			
+			article.find({
+				$or: [{
+					classUuid:{
+						$regex: new RegExp(classUuid)
+					},
+					title: {
+						$regex: reg
+					}
+				}]
+			}).skip((pageNum - 1) * pageSize).limit(+pageSize).exec(function(err, data) {
 				if (err) {
 					res.json({
 						status: 0,
-						message: '标签不存在!'
+						message: 'error'+err
 					})
 				} else {
 					res.json({
 						status: 0,
 						message: 'success',
-						data: {
-							data
-						}
+						data,
+						count:total
 					})
 				}
 
@@ -48,36 +76,37 @@ router.all('/find', function(req, res, next) {
 });
 
 // 创建文章
-router.all('/create', function(req, res, next) {
+router.all('/create',urlencodedParser,function(req, res, next) {
 	//  解决跨域
-	util.CrossDomain(req, res, next);
+	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	let token = req.body.token || req.query.token || req.headers['token'];
+	let { title,classUuid,content,author } = Object.assign(req.query,req.body)
 	//  校验 token/登录状态
 	util.checkToken(token, res).then((r) => {
 		if (!r) {
-			if (!req.query.title) {
+			if (!title) {
 				return res.json({
 					status: 400,
 					message: '标题不能为空'
 				});
-			} else if (!req.query.classUuid) {
+			} else if (!classUuid) {
 				return res.json({
 					status: 400,
 					message: '分类uuid不正确'
 				});
-			} else if (!req.query.content) {
+			} else if (!content) {
 				return res.json({
 					status: 400,
 					message: '内容不能为空'
 				});
-			} else if (!req.query.author) {
+			} else if (!author) {
 				return res.json({
 					status: 400,
 					message: '作者不能为空'
 				})
 			} else {
 				classification.find({
-					uuid: req.query.classUuid
+					uuid: classUuid
 				}, function(err, data) {
 					if (err) {
 						return res.json({
@@ -93,11 +122,11 @@ router.all('/create', function(req, res, next) {
 						}
 					}
 					article.create({
-						title: req.query.title,
-						classUuid: req.query.classUuid,
-						content: req.query.content,
+						title,
+						classUuid,
+						content,
 						uuid: uuid.v1(),
-						author: req.query.author,
+						author,
 						updated_time: +new Date()
 					}, function(err, data) {
 						if (err) {
@@ -128,16 +157,17 @@ router.all('/create', function(req, res, next) {
 });
 
 // 修改|编辑文章
-router.all('/update', function(req, res, next) {
+router.all('/update',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	util.CrossDomain(req, res, next);
+	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	let token = req.body.token || req.query.token || req.headers['token'];
+	let { uuid, title, content} = Object.assign(req.query,req.body)
 	//  校验 token/登录状态
 	util.checkToken(token, res).then((r) => {
 		if (!r) {
 			// 查文章是否存在
 			article.findOne({
-				uuid: req.query.uuid
+				uuid
 			}, function(err, content) {
 				if (err) {
 					return res.json({
@@ -148,8 +178,8 @@ router.all('/update', function(req, res, next) {
 					if (content) {
 						article.update({
 							$set: {
-								title: req.query.title,
-								content: req.query.content,
+								title,
+								content,
 								update_time: +new Date()
 							}
 						}, function(err, data) {
@@ -176,21 +206,22 @@ router.all('/update', function(req, res, next) {
 });
 
 //删除
-router.all('/del', function(req, res, next) {
+router.all('/del',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	util.CrossDomain(req, res, next);
+	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	let token = req.body.token || req.query.token || req.headers['token'];
+	let { uuid } = Object.assign(req.query,req.body);
 	//  校验 token/登录状态
 	util.checkToken(token, res).then((r) => {
 		if (!r) {
-			if (!req.query.uuid) {
+			if (!uuid) {
 				return res.json({
 					status: 400,
 					message: '标题不能为空'
 				});
 			} else {
 				article.find({
-					uuid: req.query.uuid
+					uuid
 				}, function(err, data) {
 					if (err) {
 						return res.json({
@@ -206,7 +237,7 @@ router.all('/del', function(req, res, next) {
 						}
 					}
 					article.remove({
-						uuid: req.query.uuid
+						uuid
 					}, function(err, data) {
 						if (err) {
 							res.json({

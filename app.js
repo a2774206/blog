@@ -10,7 +10,8 @@ const usersSchema = require('./db/users.js')
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var classificationRouter = require('./routes/classification');
-var articleRouter = require('./routes/article')
+var articleRouter = require('./routes/article');
+var uploadRouter = require('./routes/upload');
 var app = express();
 mongoose.connect(config.database,{useNewUrlParser:true,useUnifiedTopology:true});
 let db = mongoose.connection; // 创建一个连接放在db中
@@ -51,6 +52,7 @@ app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/classification', classificationRouter);
 app.use('/article', articleRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
