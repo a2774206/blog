@@ -6,62 +6,42 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   </head>
   <body>
-    <table class="table table-striped">
-      <th>
-		  <td>#</td>
-		  <td>帐号</td>
-		  <td>密码</td>
-		  <td>备注</td>
-	  </th>
-	  <tr >
-	  </tr>
-    </table>
-	<input type="file" onchange="filechange()">
-	<button type="button" id="button"> 上传</button>
+    <input type="file" value=""/>
+	<!-- <form action="http://127.0.0.1:3000/upload/images?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTkwMDI5NzgwLCJleHAiOjE1OTAxMDE3ODB9._ufEtk95k7mIuVrMutrHqvhwvZP-CN2uuPTzalE_HZs" method='post' enctype='multipart/form-data'>
+		<input type="file" name='single'>
+		<input type="submit">
+	</form> -->
 	<script src="https://cdn.bootcss.com/axios/0.19.2/axios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<script type="text/javascript">
+		window.onload = function(){
+			var Input = document.querySelector("input");
+			Input.onchange = function upload(){
+			    var files = !!this.files ? this.files : [];
+			    if (!files.length || !window.FileReader) {
+			        console.log("浏览器不支持HTML5");
+			        return false;   
+			    };
+			    // 创建一个FormData对象,用来组装一组用 XMLHttpRequest发送请求的键/值对
+			    var fd = new FormData();
+			    // 把 input 标签获取的文件加入 FromData 中
+			    fd.append('file', files[0]);
+			    // Ajax
+			    var request = new XMLHttpRequest();
+			    request.open("POST", "http://127.0.0.1:3000/upload/images?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTkwMDI5NzgwLCJleHAiOjE1OTAxMDE3ODB9._ufEtk95k7mIuVrMutrHqvhwvZP-CN2uuPTzalE_HZs");
+			    request.send(fd);
+			    request.onreadystatechange = function(){
+			        if(request.readyState === 4 & request.status === 200){
+			            console.log("上传成功");
+			            var response = JSON.parse(request.responseText);
+			            console.log(response);
+			        }
+			    }
+			}
+		}
 		
-		function filechange(){
-		      //上传图片的input
-		      var file = document.getElementById("file")
-		      //因为准备用post提交，又因为图片的内容比较大，所以我们选择使用formdata来承载数据
-		      //创建formdata对象
-		      var formData = new FormData();
-		      //给formdata对象中放入数据(键值对的方式)
-		      formData.append('file',file.files[0]);
-		      //提交请求
-		      $.ajax({
-		        url: 'http://127.0.0.1:3000/upload',//请求路径
-		        type: 'POST',
-		        data: formData,
-		        contentType: false,//为了让浏览器根据传入的formdata来判断contentType
-		        processData: false,//同上
-		        success: function(data){
-		          if(200 === data.code) {
-		            alert(' 上传成功')
-		          } else {
-		             alert('shibai')
-		          }
-		          console.log(2)
-		        }
-		        
-		      });
-		      console.log(1)
-		    }
-		    //给按钮添加点击事件
-		    function postPage() {
-		        //上传按钮
-		        var uploada = document.getElementById('upload');
-		        uploada.addEventListener("click",function () {
-		          uploadFile();
-		        },false);
-		    }
-		    window.onload = function () {
-		      postPage();
-		    }
 		var a = 1;
 		function getAxios(){
 			return new Promise((resolve,reject)=>{
@@ -82,7 +62,7 @@
 		async function upDataAllEvent(){
 			await getAxios();
 		}
-		upDataAllEvent()
+		// upDataAllEvent()
 		
 	</script>
   </body>

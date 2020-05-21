@@ -8,7 +8,6 @@ const config = require('./config/config')
 const usersSchema = require('./db/users.js')
 
 var loginRouter = require('./routes/login');
-var usersRouter = require('./routes/users');
 var classificationRouter = require('./routes/classification');
 var articleRouter = require('./routes/article');
 var uploadRouter = require('./routes/upload');
@@ -47,9 +46,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/login', loginRouter);
-app.use('/users', usersRouter);
 app.use('/classification', classificationRouter);
 app.use('/article', articleRouter);
 app.use('/upload', uploadRouter);
