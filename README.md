@@ -8,11 +8,11 @@
 
 ####  登录
 +	  /login 		
-	+	参数：username,password
+	+	 参数：username,password
 	+	 响应：type:Object	
 
 +	 /users/update   
-	+ 	参数：username,pwd,modifyPwd
+	+ 	 参数：username,pwd,modifyPwd
 	+	 响应：type:Object
 
 ####  分类
@@ -31,30 +31,30 @@
 	+	 参数：uuid,remarks,name
 
 ####  文章
-+	/article/find  
++	 /article/find  
 	+	参数：pageSize,pageNum,keywords,classUuid
 	+	响应：type:Object
 	   
-+	/article/create
++	 /article/create
 	+	 参数：title,classUuid,content,author
 	+	 响应：type：Object
 	
-+	/article/update
++	 /article/update
 	+	参数：title,content,uuid
 	+	响应：type：Object
 
-+	/article/find
++	 /article/find
 	+	参数	：pageSize,pageNum,keywords,classUuid
 	+	响应：type:Object
 
-+	/article/find_details
++	 /article/find_details
 	+   参数：uuid
 	+   响应：type:Object
 
-+	/article/del
++	 /article/del
 	+	参数：uuid
 	+	响应 type：Object
 	
-+	/upload/images
++	 /upload/images
 	+	参数：formData
 	+	响应：type:Object
