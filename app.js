@@ -8,6 +8,7 @@ const config = require('./config/config')
 const usersSchema = require('./db/users.js')
 
 var loginRouter = require('./routes/login');
+var userRouter = require('./routes/users');
 var classificationRouter = require('./routes/classification');
 var articleRouter = require('./routes/article');
 var uploadRouter = require('./routes/upload');
@@ -23,7 +24,8 @@ db.once('open', function() {
 				// 初次没有后台帐号创建初始
 				usersSchema.create({
 					username:config.accounts.username,
-					password:config.accounts.password
+					password:config.accounts.password,
+					jurisdiction:true
 				}, function(err, docs){
 					if ( err ) return;
 					console.log('管理员初始帐号创建成功')
@@ -46,11 +48,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/login', loginRouter);
 app.use('/classification', classificationRouter);
 app.use('/article', articleRouter);
 app.use('/upload', uploadRouter);
-
+app.use('/users', userRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(200));

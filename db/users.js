@@ -8,6 +8,11 @@ let userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  jurisdiction:{
+	//  管理员权限
+	type:Boolean,
+	required: true
   }
 });
 

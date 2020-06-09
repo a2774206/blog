@@ -30,7 +30,7 @@
 			    fd.append('file', files[0]);
 			    // Ajax
 			    var request = new XMLHttpRequest();
-			    request.open("POST", "http://127.0.0.1:3000/upload/images?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTkwMDI5NzgwLCJleHAiOjE1OTAxMDE3ODB9._ufEtk95k7mIuVrMutrHqvhwvZP-CN2uuPTzalE_HZs");
+			    request.open("POST", "http://127.0.0.1:3000/upload/images?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTkxMzQxNjg4LCJleHAiOjE1OTE0MTM2ODh9.DfbXENmQteocXdyoufVW1jmFHP2VIRUNUR2zDPg7JhM");
 			    request.send(fd);
 			    request.onreadystatechange = function(){
 			        if(request.readyState === 4 & request.status === 200){

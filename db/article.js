@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-let articleSchema =  new mongoose.Schema({
+
+const Schema = mongoose.Schema;
+let articleSchema = new Schema({
   classUuid: {
     type: String,
     required: true,
@@ -27,7 +29,7 @@ let articleSchema =  new mongoose.Schema({
   },
   updated_time:{
 	  type:String
-  }
+  },
+  
 });
-
- module.exports = mongoose.model('articleSchema', articleSchema);
+module.exports = mongoose.model('articleSchema',articleSchema,'articleSchema');

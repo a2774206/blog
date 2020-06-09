@@ -37,9 +37,10 @@ router.all('/select',urlencodedParser, function(req, res, next) {
 			let count = 0,doc = JSON.parse(JSON.stringify(docs));
 			function promises(i){
 				return new Promise((resolve,reject)=>{
-					article.count({
+					article.countDocuments({
 						classUuid:doc[i]['uuid'],
 					},(err,counts)=>{
+						// counts = String(counts)
 						if(!err){
 							doc[i]['count'] = counts;
 						}
@@ -167,7 +168,7 @@ router.all('/update',urlencodedParser, function(req, res, next) {
 						})
 					}else{
 						res.json({
-							status: 200,
+							status: 0,
 							message: '更新成功',
 							data:{
 								raw

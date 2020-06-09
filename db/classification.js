@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-let classSchema = new mongoose.Schema({
+let Schema = mongoose.Schema;
+let classSchema = new Schema({
   tabname: {
     type: String,
     required: true,
@@ -15,4 +16,4 @@ let classSchema = new mongoose.Schema({
   }
 });
 
- module.exports = mongoose.model('classSchema', classSchema);
+ module.exports = mongoose.model('classSchema', classSchema,'classSchema');

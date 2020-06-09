@@ -30,7 +30,7 @@ module.exports = {
 			       // 没有拿到token 返回错误 
 			      return { 
 			           status: 401, 
-			           message: '没有找到token.' 
+			           message: '没有找到token' 
 			      }
 			   			   
 			     }
