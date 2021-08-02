@@ -13,9 +13,9 @@ var urlencodedParser = bodyParser.urlencoded({
 
 router.all('/update', urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {
 		username,

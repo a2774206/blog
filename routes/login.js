@@ -7,12 +7,13 @@ var usersSchema = require('../db/users.js');
 // post 获取参数body-parser
 var bodyParser = require('body-parser');
 // 创建 application/x-www-form-urlencoded 编码解析
-var urlencodedParser = bodyParser.urlencoded({ extended: true })
+// var urlencodedParser = bodyParser.urlencoded({ extended: true })
 
 /*  登录成功返回 jwt */
-router.all('/', urlencodedParser,function(req, res, next) {
+router.all('/',function(req, res, next) {
 	//  解决跨域
-	if(util.CrossDomain(req,res,next)) return res.send({status:200});
+	console.log(req.body)
+	// if(util.CrossDomain(req,res,next)) return res.send({status:200});
 	let { username,password } = Object.assign(req.query,req.body);
 	usersSchema.find({},function(err,users){
 		if(err){

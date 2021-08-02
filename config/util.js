@@ -14,6 +14,7 @@ module.exports = {
 		} else {
 			next();
 		}
+		
 	},
 	checkToken: async (token,res) =>{
 			//  校验 token

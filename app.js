@@ -6,13 +6,21 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const config = require('./config/config')
 const usersSchema = require('./db/users.js')
-
 var loginRouter = require('./routes/login');
 var userRouter = require('./routes/users');
 var classificationRouter = require('./routes/classification');
 var articleRouter = require('./routes/article');
 var uploadRouter = require('./routes/upload');
 var app = express();
+app.use(function(req, res, next) { 
+  res.header("Access-Control-Allow-Origin", "*");
+  // 允许的header类型
+  res.header("Access-Control-Allow-Headers", "token,Origin, X-Requested-With, Content-Type, Accept");
+  //跨域允许的请求方式 
+  res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
+  // res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
 mongoose.connect(config.database,{useNewUrlParser:true,useUnifiedTopology:true});
 let db = mongoose.connection; // 创建一个连接放在db中
 

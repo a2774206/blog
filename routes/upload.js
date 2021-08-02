@@ -35,7 +35,6 @@ router.post('/images', multerObj.single('file'), function(req, res, next) {
 				filename += ".gif";
 			}
 			fs.renameSync(file.path, "public/" + filename);
-			console.log(req)
 			res.json({
 				status: 0,
 				message: 'success',

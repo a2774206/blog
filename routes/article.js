@@ -19,10 +19,10 @@ router.all('/find', urlencodedParser, function(req, res, next) {
 	var {
 		pageSize = 10, pageNum = 1, keywords, classUuid
 	} = Object.assign(req.query, req.body);
-
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// console.log(util.CrossDomain(req, res, next))
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 
 	
 	const reg = new RegExp(keywords, 'i');
@@ -101,9 +101,9 @@ router.all('/find', urlencodedParser, function(req, res, next) {
 });
 //  文章详情
 router.all('/find_details', urlencodedParser, function(req, res, next) {
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 	let { uuid } = Object.assign(req.query, req.body);
 	if(!uuid){
 		return res.json({
@@ -147,9 +147,9 @@ router.all('/find_details', urlencodedParser, function(req, res, next) {
 // 创建文章
 router.all('/create', urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {
 		title,
@@ -236,9 +236,9 @@ router.all('/create', urlencodedParser, function(req, res, next) {
 // 修改|编辑文章
 router.all('/update', urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {
 		uuid,
@@ -295,9 +295,9 @@ router.all('/update', urlencodedParser, function(req, res, next) {
 //删除
 router.all('/del', urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if (util.CrossDomain(req, res, next)) return res.send({
-		status: 200
-	});
+	// if (util.CrossDomain(req, res, next)) return res.send({
+	// 	status: 200
+	// });
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {
 		uuid

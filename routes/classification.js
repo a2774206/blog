@@ -14,7 +14,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true })
 // 标签查询
 router.all('/select',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
+	// if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	
 	let token = req.body.token || req.query.token || req.headers['token'];
 	
@@ -83,7 +83,7 @@ router.all('/select',urlencodedParser, function(req, res, next) {
 // 标签增加
 router.all('/add',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
+	// if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {name,remarks} = Object.assign(req.query,req.body);
 	//  校验 token/登录状态
@@ -136,7 +136,7 @@ router.all('/add',urlencodedParser, function(req, res, next) {
 //  修改分类/标签
 router.all('/update',urlencodedParser, function(req, res, next) {
 	//  解决跨域
-	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
+	// if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	let token = req.body.token || req.query.token || req.headers['token'];
 	let {uuid,name,remarks} = Object.assign(req.query,req.body);
 	//  校验 token/登录状态
@@ -187,7 +187,7 @@ router.all('/update',urlencodedParser, function(req, res, next) {
 // 删除
 router.all('/del', function(req, res, next) {
 	//  解决跨域
-	if( util.CrossDomain(req, res, next) ) return res.send({status:200});
+	// if( util.CrossDomain(req, res, next) ) return res.send({status:200});
 	
 	let token = req.body.token || req.query.token || req.headers['token'];
 	
